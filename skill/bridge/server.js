@@ -1352,7 +1352,48 @@ async function handleHookStop(req, res) {
 
   const sid = resolveHookSession(body);
   log("info", `Hook: Stop received${sid ? ` session=${sid}` : ""}`);
-  pushSseEvent("stop", body, sid);
+  
+  // 尝试从 transcript 文件提取 Claude 的回复
+  let responseText = "";
+  const transcriptPath = body.transcript_path;
+  
+  if (transcriptPath) {
+    try {
+      const fs = await import("fs");
+      const content = fs.readFileSync(transcriptPath, "utf8");
+      const lines = content.trim().split("\n");
+      
+      // 从后往前找最后一条 assistant 消息
+      for (let i = lines.length - 1; i >= 0 && i >= lines.length - 50; i--) {
+        try {
+          const entry = JSON.parse(lines[i]);
+          if (entry.type === "assistant" && entry.message?.content) {
+            // 提取文本内容
+            const textParts = entry.message.content
+              .filter(c => c.type === "text")
+              .map(c => c.text);
+            if (textParts.length > 0) {
+              responseText = textParts.join("\n").trim();
+              // 限制长度
+              if (responseText.length > 500) {
+                responseText = responseText.substring(0, 500) + "...";
+              }
+              break;
+            }
+          }
+        } catch {}
+      }
+    } catch (err) {
+      log("warn", `Failed to read transcript: ${err.message}`);
+    }
+  }
+  
+  pushSseEvent("stop", { 
+    ...body, 
+    responseText: responseText,
+    stopReason: body.stop_reason || "completed"
+  }, sid);
+  
   return jsonResponse(res, 200, { ok: true });
 }
 
