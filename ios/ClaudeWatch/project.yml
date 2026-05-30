@@ -1,15 +1,20 @@
 name: ClaudeWatch
 options:
-  bundleIdPrefix: com.shobhit.claudewatch
+  bundleIdPrefix: ${BUNDLE_ID_PREFIX}
   deploymentTarget:
-    iOS: "17.0"
-    watchOS: "10.0"
+    iOS: ${IOS_DEPLOYMENT_TARGET}
+    watchOS: ${WATCHOS_DEPLOYMENT_TARGET}
   createIntermediateGroups: true
 
 settings:
   base:
-    SWIFT_VERSION: "5.9"
+    SWIFT_VERSION: ${SWIFT_VERSION}
     ONLY_ACTIVE_ARCH: true
+    DEVELOPMENT_TEAM: ${DEVELOPMENT_TEAM}
+    MARKETING_VERSION: ${APP_VERSION}
+    CURRENT_PROJECT_VERSION: ${APP_BUILD}
+    BUNDLE_ID_PREFIX: ${BUNDLE_ID_PREFIX}
+    IOS_BUNDLE_SUFFIX: ${IOS_BUNDLE_SUFFIX}
 
 targets:
   ClaudeWatch:
@@ -20,9 +25,9 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch
+        PRODUCT_BUNDLE_IDENTIFIER: ${BUNDLE_ID_PREFIX}.${IOS_BUNDLE_SUFFIX}
         INFOPLIST_FILE: "ClaudeWatch iOS/Info.plist"
-        PRODUCT_NAME: Agent Watch
+        PRODUCT_NAME: ${PRODUCT_NAME}
         GENERATE_INFOPLIST_FILE: false
     dependencies:
       - target: ClaudeWatchWatch
@@ -36,9 +41,9 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.shobhit.claudewatch.watchkitapp
+        PRODUCT_BUNDLE_IDENTIFIER: ${BUNDLE_ID_PREFIX}.${WATCH_BUNDLE_SUFFIX}
         INFOPLIST_FILE: "ClaudeWatch watchOS/Info.plist"
-        PRODUCT_NAME: Agent Watch
+        PRODUCT_NAME: ${PRODUCT_NAME}
         GENERATE_INFOPLIST_FILE: false
         SUPPORTS_MACCATALYST: false
         ARCHS: "arm64 arm64e arm64_32"
