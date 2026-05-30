@@ -181,7 +181,26 @@ class WatchViewState: ObservableObject {
 
         case "stop":
             removeThinkingLine(sessionId: sessionId)
-            appendLine(TerminalLine(text: "— stopped —", type: .system), sessionId: sessionId)
+            
+            // 提取 Claude 的回复文本
+            let responseText = json["responseText"] as? String ?? ""
+            let stopReason = json["stopReason"] as? String ?? ""
+            
+            if !responseText.isEmpty {
+                // 显示 Claude 的回复
+                appendLine(TerminalLine(text: "Claude:", type: .system), sessionId: sessionId)
+                for line in responseText.components(separatedBy: "\n").prefix(10) {
+                    let cleaned = line.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !cleaned.isEmpty {
+                        appendLine(TerminalLine(text: cleaned, type: .output), sessionId: sessionId)
+                    }
+                }
+            }
+            
+            // 显示停止原因
+            let reasonText = stopReason.isEmpty ? "completed" : stopReason
+            appendLine(TerminalLine(text: "— \(reasonText) —", type: .system), sessionId: sessionId)
+            
             isStreaming = false
             if let sid = sessionId, let idx = sessionIndex(for: sid) {
                 sessions[idx].activity = .idle
