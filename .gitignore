@@ -7,6 +7,7 @@
 # Xcode user state
 **/xcuserdata/
 **/*.xcuserstate
+**/*.xcodeproj
 
 # macOS filesystem noise
 .DS_Store
@@ -16,3 +17,6 @@
 *.swp
 *.swo
 *~
+
+# Environment variables (sensitive)
+.env
