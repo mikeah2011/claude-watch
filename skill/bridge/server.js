@@ -6,6 +6,7 @@ import path from "node:path";
 import { execSync } from "node:child_process";
 import { spawn as childSpawn } from "node:child_process";
 import { Bonjour } from "bonjour-service";
+import qrcode from "qrcode-terminal";
 
 // ---------------------------------------------------------------------------
 // Logging (must be defined before use)
@@ -723,6 +724,7 @@ function startCloudflareTunnel(localUrl) {
     args.push("tunnel", "--url", localUrl);
   }
   args.push("--no-autoupdate");
+  args.push("--protocol", "http2");
 
   log("info", `Starting Cloudflare tunnel (${TUNNEL_MODE})...`);
   tunnelShutdownRequested = false;
@@ -2209,6 +2211,32 @@ async function startServer() {
   console.log(`║  Port:          ${String(boundPort).padEnd(20)}║`);
   console.log(`║  Agents:        ${agentLine.padEnd(20)}║`);
   console.log("╚═══════════════════════════════════════╝");
+
+  // Determine the endpoint URL for deep link
+  let endpointURL = `http://${lanIP}:${boundPort}`;
+  if (TUNNEL_ENABLED && tunnelState.publicUrl) {
+    endpointURL = tunnelState.publicUrl;
+  }
+
+  // Generate deep link
+  const deepLinkParams = new URLSearchParams({
+    url: endpointURL,
+    code: code,
+  });
+  if (INGRESS_BEARER_TOKEN) {
+    deepLinkParams.set("token", INGRESS_BEARER_TOKEN);
+  }
+  const deepLink = `agentwatch://pair?${deepLinkParams.toString()}`;
+
+  console.log("");
+  console.log("Scan QR code with iPhone to connect:");
+  console.log("");
+  qrcode.generate(deepLink, { small: true }, (qr) => {
+    console.log(qr);
+  });
+  console.log("");
+  console.log(`Deep Link: ${deepLink}`);
+
   if (TUNNEL_ENABLED) {
     console.log(`Tunnel Mode: ${TUNNEL_MODE}`);
     console.log(`Tunnel URL:  ${tunnelState.publicUrl || "starting..."}`);

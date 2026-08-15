@@ -477,7 +477,7 @@
 				"EXCLUDED_ARCHS[sdk=watchsimulator*]" = arm64e;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "ClaudeWatch watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mikeah2011.claudewatch.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikeah2011.claudewatch.app.watchkitapp;
 				PRODUCT_NAME = "Agent Watch";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -494,7 +494,7 @@
 				"EXCLUDED_ARCHS[sdk=watchsimulator*]" = arm64e;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "ClaudeWatch watchOS/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mikeah2011.claudewatch.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mikeah2011.claudewatch.app.watchkitapp;
 				PRODUCT_NAME = "Agent Watch";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

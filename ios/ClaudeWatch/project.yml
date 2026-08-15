@@ -41,7 +41,7 @@ targets:
       - path: Shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: ${BUNDLE_ID_PREFIX}.${WATCH_BUNDLE_SUFFIX}
+        PRODUCT_BUNDLE_IDENTIFIER: ${BUNDLE_ID_PREFIX}.${IOS_BUNDLE_SUFFIX}.${WATCH_BUNDLE_SUFFIX}
         INFOPLIST_FILE: "ClaudeWatch watchOS/Info.plist"
         PRODUCT_NAME: ${PRODUCT_NAME}
         GENERATE_INFOPLIST_FILE: false

@@ -33,5 +33,16 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string></string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>agentwatch</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>com.mikeah2011.claudewatch</string>
+		</dict>
+	</array>
 </dict>
 </plist>
